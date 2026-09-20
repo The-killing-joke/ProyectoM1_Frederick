@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colorfly Studio</title>
+  <!--<link rel="stylesheet" href="./css/styles.css" />-->
+</head>
+<body>
+    <header>
+        <h1>Colorfly Studio</h1>
+        <p>Bienvenido al generador de paletas de colores de Colorfly Studio, un espacio creativo donde podrás encontrar inspiración y crear combinaciones únicas con paletas de 6, 8 o 9 colores.</p>
+    </header>
+    <main>
+        <section id="generador-paletas">
+            <h2>Generador de Paletas de Colores</h2>
+            <p>Explora nuestra herramienta para generar paletas de colores personalizadas. Selecciona la cantidad de colores que deseas y deja que Colorfly Studio te sorprenda con combinaciones armoniosas y atractivas.</p>
+            <form id="paleta-form">
+                <label for="num-colores">Selecciona la cantidad de colores:</label>
+                <select id="num-colores" name="num-colores">
+                    <option value="6">6 Colores</option>
+                    <option value="8">8 Colores</option>
+                    <option value="9">9 Colores</option>
+            </select>
+            <button id="generar-paleta" type="submit">Generar paleta</button>
+            </form>
+            <div id="resultado-paletas" class="resultado-paletas" aria-live="polite">
+                <h3>Tu Paleta:</h3>
+                <ul id="paleta-colores" class="paleta-colores">
+                </ul>
+                <!-- Aquí se mostrarán los colores generados -->
+            </div>
+        </section>
+    
+    </main>
+    <footer>
+        <p>Proyecto M1: Colorfly Studio - Frederick Bermúdez</p> 
+    </footer>
+</body>
+</html>
