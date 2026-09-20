@@ -1,0 +1,106 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+}
+
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #52fcbb;
+  color: #080808;
+}
+
+/* Estilos del encabezado */
+header {
+  background-color: #61bffa;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1.1rem;
+  color: #200638;
+  max-width: 65ch;
+  margin: 0 auto;
+}
+
+main {
+  max-width: 70rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+#generador-paletas {
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 1rem rgba(8, 8, 8, 0.15);
+  background-color: #ffffff;
+}
+
+#paleta-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+#generar-paleta {
+  padding: 0.75rem 1.5rem;
+  background-color: #200638;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 700;
+}
+
+#generar-paleta:hover {
+  background-color: #3f0c37;
+}
+
+#generar-paleta:focus-visible {
+  outline: 0.2rem solid #200638;
+  outline-offset: 0.2rem;
+}
+
+#num-colores {
+  font: inherit;
+  padding: 0.65rem 0.75rem;
+  border: 0.25rem solid #200638;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+	
+}
+
+#num-colores:focus-visible {
+  outline: 0.2rem solid #200638;
+  outline-offset: 0.2rem;
+}
+
+#resultado-paletas {
+	margin-top: 2rem;
+	padding-top: 1.5rem;
+	border-top: 0.1rem solid #513d64;
+}
+
+footer {
+	background-color: #61bffa;
+	text-align: center;
+	padding: 1.5rem 1rem;
+	margin-top: 2rem;
+	font-size: 0.9rem;
+}
