@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Colorfly Studio</title>
   <link rel="stylesheet" href="./css/styles.css">
+  <script src="./js/app.js" defer></script>
 </head>
 <body>
     <header>
@@ -25,7 +26,9 @@
             <button id="generar-paleta" type="submit">Generar paleta</button>
             </form>
             <div id="resultado-paletas" class="resultado-paletas" aria-live="polite">
-                <h3>Tu Paleta:</h3>
+                <h3 id="nombre-paleta">Tu paleta</h3>
+                <p id="descripcion-paleta"></p>
+                <p id="usos-paleta"></p>
                 <ul id="paleta-colores" class="paleta-colores">
                 </ul>
                 <!-- Aquí se mostrarán los colores generados -->
