@@ -5,9 +5,54 @@ const paletaColores = document.querySelector("#paleta-colores");
 const nombrePaleta = document.querySelector("#nombre-paleta");
 const descripcionPaleta = document.querySelector("#descripcion-paleta");
 const usosPaleta = document.querySelector("#usos-paleta");
+const botonGenerarTematica = document.querySelector("#generar-paleta-tematica");
+const generarPaleta = document.querySelector("#generar-paleta");
+
+function hexGenerator() {
+    const hexCharacters = "0123456789ABCDEF";
+    let hexColor = "#";
+
+    for (let i = 0; i < 6; i++) {
+        hexColor += hexCharacters[Math.floor(Math.random() * hexCharacters.length)];
+    }
+    return hexColor;
+}
 
 
-formulario.addEventListener("submit", function (event) {
+generarPaleta.addEventListener("click", function (event) {
+    event.preventDefault();
+    const cantidadColores = Number(numeroColores.value);
+    console.log("Cantidad de colores seleccionada:", cantidadColores);
+    const coloresGenerados = [];
+    for (let i = 0; i < cantidadColores; i++) {
+        const color = hexGenerator();
+        coloresGenerados.push(color);
+    }
+    console.log("Colores generados:", coloresGenerados);
+    nombrePaleta.textContent = "Paleta Aleatoria";
+    descripcionPaleta.textContent = "Una paleta generada aleatoriamente con colores hexadecimales.";
+    usosPaleta.textContent = "Los usos más comunes son: Diseño gráfico, desarrollo web, branding y proyectos creativos.";
+    paletaColores.innerHTML = ""; // Limpiar la paleta antes de agregar nuevos colores
+    coloresGenerados.forEach(function (color) {
+        const colorItem = document.createElement("li");
+        const colorBox = document.createElement("span");
+        const codigoHex = document.createElement("span");
+
+        colorItem.classList.add("color-item");
+        colorBox.classList.add("color-box");
+        codigoHex.classList.add("codigo-hex");
+
+        colorBox.style.backgroundColor = color;
+        colorBox.setAttribute("aria-hidden", "true");
+        codigoHex.textContent = color;
+
+        colorItem.appendChild(colorBox);
+        colorItem.appendChild(codigoHex);
+        paletaColores.appendChild(colorItem);
+    });
+});
+
+botonGenerarTematica.addEventListener("click", function (event) {
     event.preventDefault();
     const cantidadColores = Number(numeroColores.value);
     console.log("Cantidad de colores seleccionada:", cantidadColores);
@@ -21,6 +66,7 @@ formulario.addEventListener("submit", function (event) {
     descripcionPaleta.textContent = paletaSeleccionada.descripcion;
     usosPaleta.textContent = paletaSeleccionada.usos;
     paletaColores.innerHTML = ""; // Limpiar la paleta antes de agregar nuevos colores
+
     coloresAMostrar.forEach(function (color) {
         const colorItem = document.createElement("li");
         const colorBox = document.createElement("span");
@@ -37,9 +83,9 @@ formulario.addEventListener("submit", function (event) {
         colorItem.appendChild(colorBox);
         colorItem.appendChild(codigoHex);
         paletaColores.appendChild(colorItem);
-    })
+    });
 
-})
+});
 
 const paletasDisponibles = [
   {
