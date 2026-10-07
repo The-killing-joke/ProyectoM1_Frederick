@@ -18,6 +18,32 @@ function hexGenerator() {
     return hexColor;
 }
 
+function hslGenerator() {
+    const h = Math.floor(Math.random() * 361); // Hue: 0-360
+    const s = Math.floor(Math.random() * 101); // Saturation: 0-100
+    const l = Math.floor(Math.random() * 101); // Lightness: 0-100
+    return "hsl(" + h + ", " + s + "%, " + l + "%)";
+}
+
+function muestraPaleta(coloresAMostrar) {
+  coloresAMostrar.forEach(function (color) {
+    const colorItem = document.createElement("li");
+    const colorBox = document.createElement("span");
+    const codigoHex = document.createElement("span");
+  
+    colorItem.classList.add("color-item");
+    colorBox.classList.add("color-box");
+    codigoHex.classList.add("codigo-hex");
+
+    colorBox.style.backgroundColor = color;
+    colorBox.setAttribute("aria-hidden", "true");
+    codigoHex.textContent = color;
+
+    colorItem.appendChild(colorBox);
+    colorItem.appendChild(codigoHex);
+    paletaColores.appendChild(colorItem);
+    });
+}
 
 generarPaleta.addEventListener("click", function (event) {
     event.preventDefault();
@@ -33,57 +59,31 @@ generarPaleta.addEventListener("click", function (event) {
     descripcionPaleta.textContent = "Una paleta generada aleatoriamente con colores hexadecimales.";
     usosPaleta.textContent = "Los usos más comunes son: Diseño gráfico, desarrollo web, branding y proyectos creativos.";
     paletaColores.innerHTML = ""; // Limpiar la paleta antes de agregar nuevos colores
-    coloresGenerados.forEach(function (color) {
-        const colorItem = document.createElement("li");
-        const colorBox = document.createElement("span");
-        const codigoHex = document.createElement("span");
 
-        colorItem.classList.add("color-item");
-        colorBox.classList.add("color-box");
-        codigoHex.classList.add("codigo-hex");
+    muestraPaleta(coloresGenerados);
 
-        colorBox.style.backgroundColor = color;
-        colorBox.setAttribute("aria-hidden", "true");
-        codigoHex.textContent = color;
-
-        colorItem.appendChild(colorBox);
-        colorItem.appendChild(codigoHex);
-        paletaColores.appendChild(colorItem);
-    });
 });
 
 botonGenerarTematica.addEventListener("click", function (event) {
     event.preventDefault();
     const cantidadColores = Number(numeroColores.value);
     console.log("Cantidad de colores seleccionada:", cantidadColores);
+    
     const indiceAleatorio = Math.floor(Math.random() * paletasDisponibles.length);
     console.log("Índice aleatorio:", indiceAleatorio);
+    
     const paletaSeleccionada = paletasDisponibles[indiceAleatorio];
     console.log("Paleta seleccionada:", paletaSeleccionada);
+    
     const coloresAMostrar = paletaSeleccionada.colores.slice(0, cantidadColores);
     console.log("Colores a mostrar:", coloresAMostrar);
+    
     nombrePaleta.textContent = paletaSeleccionada.nombre;
     descripcionPaleta.textContent = paletaSeleccionada.descripcion;
     usosPaleta.textContent = paletaSeleccionada.usos;
-    paletaColores.innerHTML = ""; // Limpiar la paleta antes de agregar nuevos colores
+    paletaColores.innerHTML = ""; // Limpiar la paleta antes de agregar nuevos colores*/
 
-    coloresAMostrar.forEach(function (color) {
-        const colorItem = document.createElement("li");
-        const colorBox = document.createElement("span");
-        const codigoHex = document.createElement("span");
-    
-        colorItem.classList.add("color-item");
-        colorBox.classList.add("color-box");
-        codigoHex.classList.add("codigo-hex");
-
-        colorBox.style.backgroundColor = color;
-        colorBox.setAttribute("aria-hidden", "true");
-        codigoHex.textContent = color;
-
-        colorItem.appendChild(colorBox);
-        colorItem.appendChild(codigoHex);
-        paletaColores.appendChild(colorItem);
-    });
+    muestraPaleta(coloresAMostrar);
 
 });
 
@@ -104,7 +104,8 @@ const paletasDisponibles = [
       "#A08A62",
       "#C2B280",
       "#3E2723",
-      "#8F9779"
+      "#8F9779",
+      "#EAE7DC"
     ]
   },
 
@@ -122,7 +123,8 @@ const paletasDisponibles = [
       "#EDC9AF",
       "#F5EBE6",
       "#5B6E50",
-      "#8C7355"
+      "#8C7355",
+      "#F0D3A7"
     ]
   },
   {
