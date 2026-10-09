@@ -7,6 +7,9 @@ const descripcionPaleta = document.querySelector("#descripcion-paleta");
 const usosPaleta = document.querySelector("#usos-paleta");
 const botonGenerarTematica = document.querySelector("#generar-paleta-tematica");
 const generarPaleta = document.querySelector("#generar-paleta");
+const formatoHsl = document.querySelector("#formato-hsl");
+
+
 
 function hexGenerator() {
     const hexCharacters = "0123456789ABCDEF";
@@ -50,10 +53,23 @@ generarPaleta.addEventListener("click", function (event) {
     const cantidadColores = Number(numeroColores.value);
     console.log("Cantidad de colores seleccionada:", cantidadColores);
     const coloresGenerados = [];
+    let generadorDeColor;
+
+    if (formatoHsl.checked) {
+        generadorDeColor = hslGenerator;
+      } else {
+         generadorDeColor = hexGenerator;
+      }
+
+
     for (let i = 0; i < cantidadColores; i++) {
-        const color = hexGenerator();
+        const color = generadorDeColor();
+        
+        
         coloresGenerados.push(color);
     }
+
+
     console.log("Colores generados:", coloresGenerados);
     nombrePaleta.textContent = "Paleta Aleatoria";
     descripcionPaleta.textContent = "Una paleta generada aleatoriamente con colores hexadecimales.";

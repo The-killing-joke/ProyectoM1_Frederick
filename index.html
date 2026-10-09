@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Colorfly Studio</title>
   <link rel="stylesheet" href="./css/styles.css">
+  <link rel="icon" href="./img/favicon.png" type="image/png">
   <script src="./js/app.js" defer></script>
 </head>
 <body>
@@ -22,7 +23,22 @@
                     <option value="6">6 Colores</option>
                     <option value="8">8 Colores</option>
                     <option value="9">9 Colores</option>
-            </select>
+                </select>
+
+                <div class="control-formato">
+                    <input
+                        class="interruptor-formato"
+                        type="checkbox"
+                        id="formato-hsl"
+                        name="formato-hsl"
+                    >
+
+                    <label class="etiqueta-interruptor" for="formato-hsl">
+                        <span class="pista-interruptor" aria-hidden="true"></span>
+                        Generar en formato HSL
+                    </label>
+                </div> 
+
             <button id="generar-paleta" type="submit">Generar paleta</button>
             <button id="generar-paleta-tematica" type="submit">Generar paleta temática</button>
             </form>

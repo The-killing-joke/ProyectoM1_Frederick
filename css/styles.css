@@ -66,8 +66,8 @@ main {
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-weight: 700;
-}
 
+}
 #generar-paleta:hover {
   background-color: #3f0c37;
 }
@@ -93,7 +93,7 @@ main {
   background-color: #3f0c37;
 }
 
-#generar-paleta:focus-visible {
+#generar-paleta-tematica:focus-visible {
   outline: 0.2rem solid #200638;
   outline-offset: 0.2rem;
 }
@@ -154,4 +154,59 @@ footer {
   font-family: monospace;
   font-size: 0.9rem;
   font-weight: 700;
+}
+
+/* Estilos del interruptor de formato HSL */
+
+.control-formato {
+  display: flex;
+  align-items: center;
+}
+
+.interruptor-formato {
+  position: absolute;
+  opacity: 0;
+  inline-size: 1px;
+  block-size: 1px;
+}
+
+.etiqueta-interruptor {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+.pista-interruptor {
+  position: relative;
+  inline-size: 3rem;
+  block-size: 1.5rem;
+  background-color: #d6d6d6;
+  border-radius: 999px;
+  transition: background-color 0.25s ease;
+}
+
+.pista-interruptor::after {
+  content: "";
+  position: absolute;
+  inline-size: 1.1rem;
+  block-size: 1.1rem;
+  top: 0.2rem;
+  left: 0.2rem;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.25s ease;
+}
+
+.interruptor-formato:checked + .etiqueta-interruptor .pista-interruptor {
+  background-color: #200638;
+}
+
+.interruptor-formato:checked + .etiqueta-interruptor .pista-interruptor::after {
+  transform: translateX(1.5rem);
+}
+
+.interruptor-formato:focus-visible + .etiqueta-interruptor .pista-interruptor {
+  outline: 0.2rem solid #200638;
+  outline-offset: 0.2rem;
 }
