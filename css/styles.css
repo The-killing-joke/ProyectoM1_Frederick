@@ -1,4 +1,35 @@
-/* Reset básico */
+/* ========================================
+   1. VARIABLES GENERALES DEL PROYECTO
+   Aquí se guardan los colores y valores
+   que se repiten en la interfaz.
+======================================== */
+
+:root {
+  /* Colores principales */
+  --color-fondo-principal: #52fcbb;
+  --color-encabezado: #61bffa;
+  --color-superficie: #ffffff;
+  --color-texto-principal: #080808;
+  --color-texto-secundario: #513d64;
+
+  /* Colores de interacción */
+  --color-principal: #200638;
+  --color-principal-hover: #3f0c37;
+  --color-borde: #d6d6d6;
+  --color-toggle-inactivo: #d6d6d6;
+
+  /* Medidas reutilizables */
+  --radio-pequeno: 0.25rem;
+  --radio-mediano: 0.5rem;
+  --sombra-tarjeta: 0 0.25rem 1rem rgba(8, 8, 8, 0.15);
+  --transicion: 0.25s ease;
+}
+
+
+/* ========================================
+   2. RESET Y CONFIGURACIÓN BASE
+======================================== */
+
 * {
   margin: 0;
   padding: 0;
@@ -9,17 +40,20 @@ html {
   font-size: 100%;
 }
 
-/* Estilos generales */
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
-  background-color: #52fcbb;
-  color: #080808;
+  background-color: var(--color-fondo-principal);
+  color: var(--color-texto-principal);
 }
 
-/* Estilos del encabezado */
+
+/* ========================================
+   3. ENCABEZADO Y PIE DE PÁGINA
+======================================== */
+
 header {
-  background-color: #61bffa;
+  background-color: var(--color-encabezado);
   padding: 2rem 1rem;
   text-align: center;
 }
@@ -30,11 +64,24 @@ header h1 {
 }
 
 header p {
-  font-size: 1.1rem;
-  color: #200638;
   max-width: 65ch;
   margin: 0 auto;
+  color: var(--color-principal);
+  font-size: 1.1rem;
 }
+
+footer {
+  margin-top: 2rem;
+  padding: 1.5rem 1rem;
+  background-color: var(--color-encabezado);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+
+/* ========================================
+   4. CONTENEDOR PRINCIPAL Y TARJETA
+======================================== */
 
 main {
   max-width: 70rem;
@@ -42,14 +89,19 @@ main {
   padding: 2rem 1rem;
 }
 
-#generador-paletas {
+.tarjeta-generador {
   padding: 2rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.25rem 1rem rgba(8, 8, 8, 0.15);
-  background-color: #ffffff;
+  background-color: var(--color-superficie);
+  border-radius: var(--radio-mediano);
+  box-shadow: var(--sombra-tarjeta);
 }
 
-#paleta-form {
+
+/* ========================================
+   5. FORMULARIO Y CONTROLES
+======================================== */
+
+.formulario-paleta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -57,106 +109,51 @@ main {
   margin-top: 1.5rem;
 }
 
-#generar-paleta {
-  padding: 0.75rem 1.5rem;
-  background-color: #200638;
-  color: #ffffff;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-weight: 700;
-
-}
-#generar-paleta:hover {
-  background-color: #3f0c37;
-}
-
-#generar-paleta:focus-visible {
-  outline: 0.2rem solid #200638;
-  outline-offset: 0.2rem;
-}
-
-
-#generar-paleta-tematica {
-  padding: 0.75rem 1.5rem;
-  background-color: #200638;
-  color: #ffffff;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-weight: 700;
-}
-
-#generar-paleta-tematica:hover {
-  background-color: #3f0c37;
-}
-
-#generar-paleta-tematica:focus-visible {
-  outline: 0.2rem solid #200638;
-  outline-offset: 0.2rem;
-}
-
-#num-colores {
-  font: inherit;
+.selector-colores {
   padding: 0.65rem 0.75rem;
-  border: 0.25rem solid #200638;
-  border-radius: 0.5rem;
-  background-color: #ffffff;
-	
+  border: 0.25rem solid var(--color-principal);
+  border-radius: var(--radio-mediano);
+  background-color: var(--color-superficie);
+  font: inherit;
 }
 
-#num-colores:focus-visible {
-  outline: 0.2rem solid #200638;
+.selector-colores:focus-visible {
+  outline: 0.2rem solid var(--color-principal);
   outline-offset: 0.2rem;
 }
 
-#resultado-paletas {
-	margin-top: 2rem;
-	padding-top: 1.5rem;
-	border-top: 0.1rem solid #513d64;
-}
 
-footer {
-	background-color: #61bffa;
-	text-align: center;
-	padding: 1.5rem 1rem;
-	margin-top: 2rem;
-	font-size: 0.9rem;
-}
+/* ========================================
+   6. BOTONES
+   La clase .boton se comparte entre los
+   dos botones del generador.
+======================================== */
 
-#paleta-colores {
-  list-style: none;
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.color-item {
-  background-color: #ffffff;
-  border: 1px solid #d6d6d6;
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-
-.color-box {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-}
-
-.codigo-hex {
-  display: block;
-  padding: 0.6rem 0.75rem;
-  color: #200638;
-  font-family: monospace;
-  font-size: 0.9rem;
+.boton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--radio-pequeno);
+  background-color: var(--color-principal);
+  color: var(--color-superficie);
+  cursor: pointer;
+  font: inherit;
   font-weight: 700;
+  transition: background-color var(--transicion);
 }
 
-/* Estilos del interruptor de formato HSL */
+.boton:hover {
+  background-color: var(--color-principal-hover);
+}
+
+.boton:focus-visible {
+  outline: 0.2rem solid var(--color-principal);
+  outline-offset: 0.2rem;
+}
+
+
+/* ========================================
+   7. TOGGLE PARA CAMBIAR ENTRE HEX Y HSL
+======================================== */
 
 .control-formato {
   display: flex;
@@ -165,9 +162,9 @@ footer {
 
 .interruptor-formato {
   position: absolute;
+  width: 1px;
+  height: 1px;
   opacity: 0;
-  inline-size: 1px;
-  block-size: 1px;
 }
 
 .etiqueta-interruptor {
@@ -179,27 +176,27 @@ footer {
 
 .pista-interruptor {
   position: relative;
-  inline-size: 3rem;
-  block-size: 1.5rem;
-  background-color: #d6d6d6;
+  width: 3rem;
+  height: 1.5rem;
   border-radius: 999px;
-  transition: background-color 0.25s ease;
+  background-color: var(--color-toggle-inactivo);
+  transition: background-color var(--transicion);
 }
 
 .pista-interruptor::after {
   content: "";
   position: absolute;
-  inline-size: 1.1rem;
-  block-size: 1.1rem;
   top: 0.2rem;
   left: 0.2rem;
-  background-color: #ffffff;
+  width: 1.1rem;
+  height: 1.1rem;
   border-radius: 50%;
-  transition: transform 0.25s ease;
+  background-color: var(--color-superficie);
+  transition: transform var(--transicion);
 }
 
 .interruptor-formato:checked + .etiqueta-interruptor .pista-interruptor {
-  background-color: #200638;
+  background-color: var(--color-principal);
 }
 
 .interruptor-formato:checked + .etiqueta-interruptor .pista-interruptor::after {
@@ -207,6 +204,52 @@ footer {
 }
 
 .interruptor-formato:focus-visible + .etiqueta-interruptor .pista-interruptor {
-  outline: 0.2rem solid #200638;
+  outline: 0.2rem solid var(--color-principal);
   outline-offset: 0.2rem;
+}
+
+
+/* ========================================
+   8. ÁREA DE RESULTADOS
+======================================== */
+
+.resultado-paletas {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 0.1rem solid var(--color-texto-secundario);
+}
+
+
+/* ========================================
+   9. TARJETAS DE COLORES GENERADOS
+======================================== */
+
+.paleta-colores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+  list-style: none;
+}
+
+.color-item {
+  overflow: hidden;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-mediano);
+  background-color: var(--color-superficie);
+}
+
+.color-box {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+}
+
+.codigo-hex {
+  display: block;
+  padding: 0.6rem 0.75rem;
+  color: var(--color-principal);
+  font-family: monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
 }

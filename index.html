@@ -14,11 +14,11 @@
         <p>Bienvenido al generador de paletas de colores de Colorfly Studio, un espacio creativo donde podrás encontrar inspiración y crear combinaciones únicas con paletas de 6, 8 o 9 colores.</p>
     </header>
     <main>
-        <section id="generador-paletas">
+        <section id="generador-paletas" class="tarjeta-generador">
             <h2>Generador de Paletas de Colores</h2>
             <p>Explora nuestra herramienta para generar paletas de colores personalizadas. Selecciona la cantidad de colores que deseas y deja que Colorfly Studio te sorprenda con combinaciones armoniosas y atractivas.</p>
-            <form id="paleta-form">
-                <label for="num-colores">Selecciona la cantidad de colores:</label>
+            <form id="paleta-form" class="formulario-paleta">
+                <label for="num-colores" >Selecciona la cantidad de colores:</label>
                 <select id="num-colores" name="num-colores">
                     <option value="6">6 Colores</option>
                     <option value="8">8 Colores</option>
@@ -35,13 +35,14 @@
 
                     <label class="etiqueta-interruptor" for="formato-hsl">
                         <span class="pista-interruptor" aria-hidden="true"></span>
-                        Generar en formato HSL
+                        Usar formato HSL
                     </label>
                 </div> 
 
-            <button id="generar-paleta" type="submit">Generar paleta</button>
-            <button id="generar-paleta-tematica" type="submit">Generar paleta temática</button>
+            <button id="generar-paleta" class="boton" type="submit">Generar paleta</button>
+            <button id="generar-paleta-tematica" class="boton" type="submit">Generar paleta temática</button>
             </form>
+
             <div id="resultado-paletas" class="resultado-paletas" aria-live="polite">
                 <h3 id="nombre-paleta">Tu paleta</h3>
                 <p id="descripcion-paleta"></p>
