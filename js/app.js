@@ -1,3 +1,8 @@
+/* ========================================
+   1. VARIABLES GENERALES TRAIDAS DEL DOM
+   Aquí se declara todo lo que se puede necesitar en el código, como botones, inputs, contenedores, etc.
+======================================== */
+
 console.log("Javascript de Colorfly Studio Conectado");
 const formulario = document.querySelector("#paleta-form");
 const numeroColores = document.querySelector("#num-colores");
@@ -8,31 +13,142 @@ const usosPaleta = document.querySelector("#usos-paleta");
 const botonGenerarTematica = document.querySelector("#generar-paleta-tematica");
 const generarPaleta = document.querySelector("#generar-paleta");
 const formatoHsl = document.querySelector("#formato-hsl");
+let coloresEnPantalla = [];
 
-
+/* ========================================
+   2. FUNCIONES
+   Aquí se declaran todas las funciones que se van a utilizar en el código.
+======================================== */
 
 function hexGenerator() {
-    const hexCharacters = "0123456789ABCDEF";
-    let hexColor = "#";
+  const hexCharacters = "0123456789ABCDEF";
+  let hexColor = "#";
 
-    for (let i = 0; i < 6; i++) {
-        hexColor += hexCharacters[Math.floor(Math.random() * hexCharacters.length)];
+  for (let i = 0; i < 6; i++) {
+      hexColor += hexCharacters[Math.floor(Math.random() * hexCharacters.length)];
     }
     return hexColor;
 }
 
 function hslGenerator() {
-    const h = Math.floor(Math.random() * 361); // Hue: 0-360
-    const s = Math.floor(Math.random() * 101); // Saturation: 0-100
-    const l = Math.floor(Math.random() * 101); // Lightness: 0-100
-    return "hsl(" + h + ", " + s + "%, " + l + "%)";
+  const h = Math.floor(Math.random() * 361); // Hue: 0-360
+  const s = Math.floor(Math.random() * 101); // Saturation: 0-100
+  const l = Math.floor(Math.random() * 101); // Lightness: 0-100
+  return "hsl(" + h + ", " + s + "%, " + l + "%)";
+}
+
+function hexAHsl(hex) {
+  const rojo = parseInt(hex.slice(1, 3), 16) / 255;
+  const verde = parseInt(hex.slice(3, 5), 16) / 255;
+  const azul = parseInt(hex.slice(5, 7), 16) / 255;
+
+  const maximo = Math.max(rojo, verde, azul);
+  const minimo = Math.min(rojo, verde, azul);
+  const diferencia = maximo - minimo;
+
+  let tono = 0;
+  let saturacion = 0;
+  const luminosidad = (maximo + minimo) / 2;
+
+  if (diferencia !== 0) {
+    saturacion = diferencia / (1 - Math.abs(2 * luminosidad - 1));
+
+    if (maximo === rojo) {
+      tono = 60 * (((verde - azul) / diferencia) % 6);
+    } else if (maximo === verde) {
+      tono = 60 * (((azul - rojo) / diferencia) + 2);
+    } else {
+      tono = 60 * (((rojo - verde) / diferencia) + 4);
+    }
+
+    if (tono < 0) {
+      tono += 360;
+    }
+  }
+
+  return "hsl(" + Math.round(tono) + ", " + Math.round(saturacion * 100) + "%, " + Math.round(luminosidad * 100) + "%)";
+}
+
+function hslAHex(hsl) {
+  const valores = hsl
+    .replace("hsl(", "")
+    .replace(")", "")
+    .replaceAll("%", "")
+    .split(", ");
+
+  const tono = Number(valores[0]);
+  const saturacion = Number(valores[1]) / 100;
+  const luminosidad = Number(valores[2]) / 100;
+
+  const croma = (1 - Math.abs(2 * luminosidad - 1)) * saturacion;
+  const valorIntermedio = croma * (1 - Math.abs((tono / 60) % 2 - 1));
+  const ajuste = luminosidad - croma / 2;
+
+  let rojo = 0;
+  let verde = 0;
+  let azul = 0;
+
+  if (tono < 60) {
+    rojo = croma;
+    verde = valorIntermedio;
+  } else if (tono < 120) {
+    rojo = valorIntermedio;
+    verde = croma;
+  } else if (tono < 180) {
+    verde = croma;
+    azul = valorIntermedio;
+  } else if (tono < 240) {
+    verde = valorIntermedio;
+    azul = croma;
+  } else if (tono < 300) {
+    rojo = valorIntermedio;
+    azul = croma;
+  } else {
+    rojo = croma;
+    azul = valorIntermedio;
+  }
+
+  function convertirAHex(valor) {
+    const hexadecimal = Math.round((valor + ajuste) * 255)
+      .toString(16)
+      .toUpperCase();
+
+    if (hexadecimal.length === 1) {
+      return "0" + hexadecimal;
+    }
+
+    return hexadecimal;
+  }
+
+  return "#" +
+    convertirAHex(rojo) +
+    convertirAHex(verde) +
+    convertirAHex(azul);
+}
+
+async function copiarColor(color, boton) {
+  try {
+    await navigator.clipboard.writeText(color);
+    boton.classList.add("copiado");
+
+    const textoOriginal = boton.textContent;
+    boton.textContent = "¡Copiado!";
+
+    setTimeout(function () {
+      boton.textContent = textoOriginal;
+      boton.classList.remove("copiado");
+    }, 1500);
+
+  } catch (error) {
+    console.error("No fue posible copiar el color:", error);
+  }
 }
 
 function muestraPaleta(coloresAMostrar) {
   coloresAMostrar.forEach(function (color) {
     const colorItem = document.createElement("li");
     const colorBox = document.createElement("span");
-    const codigoHex = document.createElement("span");
+    const codigoHex = document.createElement("button");
   
     colorItem.classList.add("color-item");
     colorBox.classList.add("color-box");
@@ -41,12 +157,28 @@ function muestraPaleta(coloresAMostrar) {
     colorBox.style.backgroundColor = color;
     colorBox.setAttribute("aria-hidden", "true");
     codigoHex.textContent = color;
+    codigoHex.type = "button";
+    codigoHex.setAttribute("aria-label", "Copiar el código de color" +color);
+
+    codigoHex.addEventListener("click", function () {
+      copiarColor(color, codigoHex);
+    });
 
     colorItem.appendChild(colorBox);
     colorItem.appendChild(codigoHex);
     paletaColores.appendChild(colorItem);
     });
 }
+
+function renderizarPaleta(colores) {
+  paletaColores.innerHTML = "";
+  muestraPaleta(colores);
+}
+
+/* ========================================
+   3. EVENTOS
+   Aquí se declaran todos los eventos que se van a utilizar en el código.
+======================================== */
 
 generarPaleta.addEventListener("click", function (event) {
     event.preventDefault();
@@ -74,9 +206,8 @@ generarPaleta.addEventListener("click", function (event) {
     nombrePaleta.textContent = "Paleta Aleatoria";
     descripcionPaleta.textContent = "Una paleta generada aleatoriamente con colores hexadecimales.";
     usosPaleta.textContent = "Los usos más comunes son: Diseño gráfico, desarrollo web, branding y proyectos creativos.";
-    paletaColores.innerHTML = ""; // Limpiar la paleta antes de agregar nuevos colores
-
-    muestraPaleta(coloresGenerados);
+    coloresEnPantalla = [...coloresGenerados];
+    renderizarPaleta(coloresEnPantalla);
 
 });
 
@@ -91,17 +222,44 @@ botonGenerarTematica.addEventListener("click", function (event) {
     const paletaSeleccionada = paletasDisponibles[indiceAleatorio];
     console.log("Paleta seleccionada:", paletaSeleccionada);
     
-    const coloresAMostrar = paletaSeleccionada.colores.slice(0, cantidadColores);
+    let coloresAMostrar = paletaSeleccionada.colores.slice(0, cantidadColores); //Cambiamos const pot let y agregamos un condicional para poder mostrar las paletas temáticas pre establecidas en hex como hsl
+    if (formatoHsl.checked) {
+      coloresAMostrar = coloresAMostrar.map(function (color) {
+        return hexAHsl(color);
+      });
+}
     console.log("Colores a mostrar:", coloresAMostrar);
     
     nombrePaleta.textContent = paletaSeleccionada.nombre;
     descripcionPaleta.textContent = paletaSeleccionada.descripcion;
     usosPaleta.textContent = paletaSeleccionada.usos;
-    paletaColores.innerHTML = ""; // Limpiar la paleta antes de agregar nuevos colores*/
-
-    muestraPaleta(coloresAMostrar);
+    coloresEnPantalla = [...coloresAMostrar];
+    renderizarPaleta(coloresEnPantalla);
 
 });
+
+formatoHsl.addEventListener("change", function () {
+  if (coloresEnPantalla.length === 0) {
+    return;
+  }
+
+  if (formatoHsl.checked) {
+    coloresEnPantalla = coloresEnPantalla.map(function (color) {
+      return hexAHsl(color);
+    });
+  } else {
+    coloresEnPantalla = coloresEnPantalla.map(function (color) {
+      return hslAHex(color);
+    });
+  }
+
+  renderizarPaleta(coloresEnPantalla);
+});
+
+/* ========================================
+    4. PALLETAS TEMÁTICAS
+    Aquí se declaran todas las paletas temáticas que se van a utilizar en el código.
+======================================== */
 
 const paletasDisponibles = [
   {

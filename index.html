@@ -39,8 +39,26 @@
                     </label>
                 </div> 
 
-            <button id="generar-paleta" class="boton" type="submit">Generar paleta</button>
-            <button id="generar-paleta-tematica" class="boton" type="submit">Generar paleta temática</button>
+                                
+                <button id="generar-paleta" class="boton" type="submit">Generar paleta</button>
+                <div class="contenedor-tooltip">
+                    <button
+                        id="generar-paleta-tematica"
+                        class="boton"
+                        type="submit"
+                        aria-describedby="ayuda-paleta-tematica"
+                    >
+                        Generar paleta temática
+                    </button>
+            
+                    <span
+                        id="ayuda-paleta-tematica"
+                        class="tooltip"
+                        role="tooltip"
+                    >
+                        Genera una de 20 paletas preestablecidas con colores relacionados entre sí.
+                    </span>
+                </div>
             </form>
 
             <div id="resultado-paletas" class="resultado-paletas" aria-live="polite">

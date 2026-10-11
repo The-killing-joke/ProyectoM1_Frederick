@@ -246,10 +246,77 @@ main {
 }
 
 .codigo-hex {
+  position: relative;
   display: block;
+  width: 100%;
   padding: 0.6rem 0.75rem;
+  border: none;
+  background-color: transparent;
   color: var(--color-principal);
+  cursor: pointer;
   font-family: monospace;
   font-size: 0.9rem;
   font-weight: 700;
+  text-align: left;
+}
+
+.codigo-hex:not(.copiado):hover,
+.codigo-hex:not(.copiado):focus-visible {
+  color: transparent;
+}
+
+.codigo-hex:not(.copiado):hover::after,
+.codigo-hex:not(.copiado):focus-visible::after {
+  content: "Copiar";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  color: var(--color-principal);
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.codigo-hex:focus-visible {
+  outline: 0.2rem solid var(--color-principal);
+  outline-offset: -0.2rem;
+}
+
+/* ========================================
+   10. MENSAJE DE AYUDA DEL BOTÓN TEMÁTICO
+======================================== */
+
+.contenedor-tooltip {
+  position: relative;
+  display: inline-flex;
+}
+
+.tooltip {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  z-index: 1;
+
+  width: 18rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radio-pequeno);
+  background-color: var(--color-principal);
+  color: var(--color-superficie);
+
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-align: center;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(-0.25rem);
+  transition: opacity var(--transicion), transform var(--transicion);
+}
+
+.contenedor-tooltip:hover .tooltip,
+.contenedor-tooltip:focus-within .tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
