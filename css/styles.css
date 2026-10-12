@@ -87,6 +87,16 @@ main {
   max-width: 70rem;
   margin: 0 auto;
   padding: 2rem 1rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.45fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 60rem) {
+  main {
+    grid-template-columns: 1fr;
+  }
 }
 
 .tarjeta-generador {
@@ -387,4 +397,88 @@ main {
   background-color: #fee2e2;
   color: #991b1b;
   font-weight: 700;
+}
+
+/* ========================================
+   12. HISTORIAL DE PALETAS
+======================================== */
+
+.historial-paletas {
+  padding: 1.5rem;
+  border-radius: var(--radio-mediano);
+  background-color: var(--color-superficie);
+  box-shadow: var(--sombra-tarjeta);
+}
+
+.encabezado-historial {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.lista-historial {
+  display: grid;
+  gap: 1rem;
+  list-style: none;
+}
+
+.item-historial {
+  padding: 1rem;
+  border: 0.1rem solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  background-color: var(--color-superficie);
+}
+
+.nombre-historial {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.detalles-historial {
+  margin-bottom: 0.75rem;
+  color: var(--color-texto-secundario);
+  font-size: 0.85rem;
+}
+
+.vista-colores-historial {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.muestra-color-historial {
+  flex: 1;
+  min-width: 0;
+  height: 1.25rem;
+  border-radius: var(--radio-pequeno);
+}
+
+.boton-cargar-historial,
+.boton-eliminar-historial {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.boton-eliminar-historial {
+  border-color: #991b1b;
+  background-color: transparent;
+  color: #991b1b;
+}
+
+.boton-eliminar-historial:hover {
+  background-color: #fee2e2;
+}
+
+#limpiar-historial {
+  padding: 0.5rem 0.75rem;
+  border-color: #991b1b;
+  background-color: transparent;
+  color: #991b1b;
+  font-size: 0.85rem;
+}
+
+#limpiar-historial:hover {
+  background-color: #fee2e2;
 }
