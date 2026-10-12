@@ -13,7 +13,10 @@ const usosPaleta = document.querySelector("#usos-paleta");
 const botonGenerarTematica = document.querySelector("#generar-paleta-tematica");
 const generarPaleta = document.querySelector("#generar-paleta");
 const formatoHsl = document.querySelector("#formato-hsl");
+const mensajeError = document.querySelector("#mensaje-error");
 let coloresEnPantalla = [];
+const posicionesBloqueadas = new Set();
+let temporizadorError;
 
 /* ========================================
    2. FUNCIONES
@@ -145,21 +148,41 @@ async function copiarColor(color, boton) {
 }
 
 function muestraPaleta(coloresAMostrar) {
-  coloresAMostrar.forEach(function (color) {
+  coloresAMostrar.forEach(function (color, indice) {
     const colorItem = document.createElement("li");
-    const colorBox = document.createElement("span");
+    const colorBox = document.createElement("button");
     const codigoHex = document.createElement("button");
   
     colorItem.classList.add("color-item");
     colorBox.classList.add("color-box");
     codigoHex.classList.add("codigo-hex");
-
     colorBox.style.backgroundColor = color;
-    colorBox.setAttribute("aria-hidden", "true");
+
+    /* Convertimos el Box del color en botón para tener el candado y bloquear los colores*/
+
+    colorBox.type = "button";
+    const estaBloqueado = posicionesBloqueadas.has(indice);
+    colorBox.setAttribute(
+      "aria-label",
+      estaBloqueado
+      ? "Desbloquear el color " + color
+      : "Bloquear el color " + color
+    );
+    colorBox.setAttribute("aria-pressed", estaBloqueado);
+    colorBox.addEventListener("click", function () {
+      if (posicionesBloqueadas.has(indice)) {
+        posicionesBloqueadas.delete(indice);
+      } else {
+        posicionesBloqueadas.add(indice);
+      }
+      renderizarPaleta(coloresEnPantalla);
+    });
+
     codigoHex.textContent = color;
     codigoHex.type = "button";
     codigoHex.setAttribute("aria-label", "Copiar el código de color" +color);
 
+  
     codigoHex.addEventListener("click", function () {
       copiarColor(color, codigoHex);
     });
@@ -176,6 +199,53 @@ function renderizarPaleta(colores) {
   muestraPaleta(colores);
 }
 
+function mostrarError(texto) {
+  clearTimeout(temporizadorError);
+
+  mensajeError.textContent = texto;
+
+  temporizadorError = setTimeout(function () {
+    mensajeError.textContent = "";
+  }, 4000);
+}
+
+function obtenerColoresBloqueados() {
+  return coloresEnPantalla.filter(function (color, indice) {
+    return posicionesBloqueadas.has(indice);
+  });
+}
+
+function obtenerGeneradorDeColor() {
+  if (formatoHsl.checked) {
+    return hslGenerator;
+  }
+
+  return hexGenerator;
+}
+
+function crearPaletaAleatoria(
+  cantidadColores,
+  coloresBloqueados,
+  generadorDeColor
+) {
+  const coloresGenerados = [...coloresBloqueados];
+
+  while (coloresGenerados.length < cantidadColores) {
+    const color = generadorDeColor();
+    coloresGenerados.push(color);
+  }
+
+  return coloresGenerados;
+}
+
+function actualizarPosicionesBloqueadas(cantidadBloqueados) {
+  posicionesBloqueadas.clear();
+
+  for (let i = 0; i < cantidadBloqueados; i++) {
+    posicionesBloqueadas.add(i);
+  }
+}
+
 /* ========================================
    3. EVENTOS
    Aquí se declaran todos los eventos que se van a utilizar en el código.
@@ -185,23 +255,26 @@ generarPaleta.addEventListener("click", function (event) {
     event.preventDefault();
     const cantidadColores = Number(numeroColores.value);
     console.log("Cantidad de colores seleccionada:", cantidadColores);
-    const coloresGenerados = [];
-    let generadorDeColor;
 
-    if (formatoHsl.checked) {
-        generadorDeColor = hslGenerator;
-      } else {
-         generadorDeColor = hexGenerator;
-      }
+    const coloresBloqueados = obtenerColoresBloqueados();
 
-
-    for (let i = 0; i < cantidadColores; i++) {
-        const color = generadorDeColor();
-        
-        
-        coloresGenerados.push(color);
+    if (coloresBloqueados.length > cantidadColores) {
+      mostrarError("La cantidad de colores bloqueados es mayor que la cantidad de colores que deseas generar. Verifica e intenta de nuevo.");
+      return;
     }
+    clearTimeout(temporizadorError);
+    mensajeError.textContent = "";
+    
+    const generadorDeColor = obtenerGeneradorDeColor();
 
+
+    const coloresGenerados = crearPaletaAleatoria(
+      cantidadColores,
+      coloresBloqueados,
+      generadorDeColor
+    );
+
+    actualizarPosicionesBloqueadas(coloresBloqueados.length);
 
     console.log("Colores generados:", coloresGenerados);
     nombrePaleta.textContent = "Paleta Aleatoria";

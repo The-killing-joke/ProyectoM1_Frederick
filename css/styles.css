@@ -250,9 +250,43 @@ main {
 }
 
 .color-box {
-  display: block;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
   width: 100%;
   aspect-ratio: 4 / 3;
+  padding: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+.color-box::before {
+  content: "🔓";
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity var(--transicion), transform var(--transicion);
+}
+
+.color-box:hover::before,
+.color-box:focus-visible::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.color-box[aria-pressed="true"]::before {
+  content: "🔒";
+}
+
+.color-box:focus-visible {
+  outline: 0.2rem solid var(--color-principal);
+  outline-offset: -0.2rem;
 }
 
 .color-item:hover {
@@ -334,4 +368,23 @@ main {
 .contenedor-tooltip:focus-within .tooltip {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+
+/* ========================================
+   11. MENSAJE DE ERROR
+======================================== */
+
+.mensaje-error:empty {
+  display: none;
+}
+
+.mensaje-error {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border: 0.1rem solid #991b1b;
+  border-radius: var(--radio-pequeno);
+  background-color: #fee2e2;
+  color: #991b1b;
+  font-weight: 700;
 }
