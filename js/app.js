@@ -14,6 +14,11 @@ const botonGenerarTematica = document.querySelector("#generar-paleta-tematica");
 const generarPaleta = document.querySelector("#generar-paleta");
 const formatoHsl = document.querySelector("#formato-hsl");
 const mensajeError = document.querySelector("#mensaje-error");
+const listaHistorial = document.querySelector("#lista-historial");
+const historialVacio = document.querySelector("#historial-vacio");
+const botonLimpiarHistorial = document.querySelector("#limpiar-historial");
+
+const CLAVE_HISTORIAL = "historialPaletasColorfly";
 let coloresEnPantalla = [];
 const posicionesBloqueadas = new Set();
 let temporizadorError;
@@ -246,6 +251,131 @@ function actualizarPosicionesBloqueadas(cantidadBloqueados) {
   }
 }
 
+function obtenerHistorial() {
+  const historialGuardado = localStorage.getItem(CLAVE_HISTORIAL);
+
+  if (historialGuardado) {
+    return JSON.parse(historialGuardado);
+  }
+
+  return [];
+}
+
+function guardarHistorial(historial) {
+  const historialComoTexto = JSON.stringify(historial);
+
+  localStorage.setItem(CLAVE_HISTORIAL, historialComoTexto);
+}
+
+function agregarPaletaAlHistorial(nombre, descripcion, usos, colores) {
+  const historial = obtenerHistorial();
+
+  const nuevaPaleta = {
+    id: Date.now(),
+    nombre: nombre,
+    descripcion: descripcion,
+    usos: usos,
+    colores: [...colores],
+    formato: formatoHsl.checked ? "HSL" : "HEX",
+    fecha: new Date().toLocaleString("es-CO")
+  };
+
+  historial.unshift(nuevaPaleta);
+
+  guardarHistorial(historial);
+  renderizarHistorial();
+}
+
+function renderizarHistorial() {
+  const historial = obtenerHistorial();
+  
+  listaHistorial.innerHTML = "";
+
+  if (historial.length === 0) {
+    historialVacio.hidden = false;
+    return;
+  }
+
+  historialVacio.hidden = true;
+
+  historial.forEach(function (paleta) {
+    const itemHistorial = document.createElement("li");
+    const nombre = document.createElement("h3");
+    const detalles = document.createElement("p");
+    const vistaColores = document.createElement("div");
+    const botonCargar = document.createElement("button");
+    const botonEliminar = document.createElement("button");
+
+    itemHistorial.classList.add("item-historial");
+    nombre.classList.add("nombre-historial");
+    detalles.classList.add("detalles-historial");
+    vistaColores.classList.add("vista-colores-historial");
+
+    nombre.textContent = paleta.nombre;
+    detalles.textContent = paleta.formato + " · " + paleta.fecha;
+
+    paleta.colores.forEach(function (color) {
+      const muestraColor = document.createElement("span");
+
+      muestraColor.classList.add("muestra-color-historial");
+      muestraColor.style.backgroundColor = color;
+      muestraColor.setAttribute("aria-hidden", "true");
+
+      vistaColores.appendChild(muestraColor);
+    });
+    botonCargar.type = "button";
+    botonCargar.classList.add("boton", "boton-cargar-historial");
+    botonCargar.textContent = "Cargar paleta";
+    botonCargar.setAttribute("aria-label","Cargar la paleta " + paleta.nombre + " del historial");
+    botonCargar.addEventListener("click", function () {
+    cargarPaletaDelHistorial(paleta);
+    });
+
+    botonEliminar.type = "button";
+    botonEliminar.classList.add("boton", "boton-eliminar-historial");
+    botonEliminar.textContent = "Eliminar";
+    botonEliminar.setAttribute("aria-label","Eliminar la paleta " + paleta.nombre + " del historial");
+    botonEliminar.addEventListener("click", function () {
+      eliminarPaletaDelHistorial(paleta.id);
+    });
+
+    itemHistorial.appendChild(nombre);
+    itemHistorial.appendChild(detalles);
+    itemHistorial.appendChild(vistaColores);
+    itemHistorial.appendChild(botonCargar);
+    itemHistorial.appendChild(botonEliminar);
+
+    listaHistorial.appendChild(itemHistorial);
+
+    
+  });
+}
+
+function cargarPaletaDelHistorial(paleta) {
+  coloresEnPantalla = [...paleta.colores];
+
+  posicionesBloqueadas.clear();
+
+  formatoHsl.checked = paleta.formato === "HSL";
+
+  nombrePaleta.textContent = paleta.nombre;
+  descripcionPaleta.textContent = paleta.descripcion;
+  usosPaleta.textContent = paleta.usos;
+
+  renderizarPaleta(coloresEnPantalla);
+}
+
+function eliminarPaletaDelHistorial(id) {
+  const historial = obtenerHistorial();
+
+  const historialActualizado = historial.filter(function (paleta) {
+    return paleta.id !== id;
+  });
+
+  guardarHistorial(historialActualizado);
+  renderizarHistorial();
+}
+
 /* ========================================
    3. EVENTOS
    Aquí se declaran todos los eventos que se van a utilizar en el código.
@@ -281,8 +411,8 @@ generarPaleta.addEventListener("click", function (event) {
     descripcionPaleta.textContent = "Una paleta generada aleatoriamente con colores hexadecimales.";
     usosPaleta.textContent = "Los usos más comunes son: Diseño gráfico, desarrollo web, branding y proyectos creativos.";
     coloresEnPantalla = [...coloresGenerados];
+    agregarPaletaAlHistorial(nombrePaleta.textContent, descripcionPaleta.textContent, usosPaleta.textContent, coloresEnPantalla);
     renderizarPaleta(coloresEnPantalla);
-
 });
 
 botonGenerarTematica.addEventListener("click", function (event) {
@@ -295,19 +425,38 @@ botonGenerarTematica.addEventListener("click", function (event) {
     
     const paletaSeleccionada = paletasDisponibles[indiceAleatorio];
     console.log("Paleta seleccionada:", paletaSeleccionada);
+
+    const coloresBloqueados = obtenerColoresBloqueados();
+    if (coloresBloqueados.length > cantidadColores) {
+      mostrarError("La cantidad de colores bloqueados es mayor que la cantidad de colores que deseas generar. Verifica e intenta de nuevo.");
+      return;
+    }
     
-    let coloresAMostrar = paletaSeleccionada.colores.slice(0, cantidadColores); //Cambiamos const pot let y agregamos un condicional para poder mostrar las paletas temáticas pre establecidas en hex como hsl
+    clearTimeout(temporizadorError);
+    mensajeError.textContent = "";
+    
+    let coloresTematicos = [...paletaSeleccionada.colores];
     if (formatoHsl.checked) {
-      coloresAMostrar = coloresAMostrar.map(function (color) {
+      coloresTematicos = coloresTematicos.map(function (color) {
         return hexAHsl(color);
       });
-}
+    }
+    const coloresDisponibles = coloresTematicos.filter(function (color) {
+      return !coloresBloqueados.includes(color);
+    });
+    const coloresAMostrar = [
+      ...coloresBloqueados,
+      ...coloresDisponibles
+    ].slice(0, cantidadColores);
     console.log("Colores a mostrar:", coloresAMostrar);
+
+    actualizarPosicionesBloqueadas(coloresBloqueados.length);
     
     nombrePaleta.textContent = paletaSeleccionada.nombre;
     descripcionPaleta.textContent = paletaSeleccionada.descripcion;
     usosPaleta.textContent = paletaSeleccionada.usos;
     coloresEnPantalla = [...coloresAMostrar];
+    agregarPaletaAlHistorial(nombrePaleta.textContent, descripcionPaleta.textContent, usosPaleta.textContent, coloresEnPantalla);
     renderizarPaleta(coloresEnPantalla);
 
 });
@@ -328,6 +477,11 @@ formatoHsl.addEventListener("change", function () {
   }
 
   renderizarPaleta(coloresEnPantalla);
+});
+
+botonLimpiarHistorial.addEventListener("click", function () {
+  localStorage.removeItem(CLAVE_HISTORIAL);
+  renderizarHistorial();
 });
 
 /* ========================================
@@ -604,3 +758,5 @@ const paletasDisponibles = [
 
   
 ];
+
+renderizarHistorial();
