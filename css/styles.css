@@ -226,10 +226,20 @@ main {
 
 .paleta-colores {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
   margin-top: 1.5rem;
   list-style: none;
+}
+
+.paleta-colores[data-cantidad="8"] {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 40rem) {
+  .paleta-colores[data-cantidad="8"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .color-item {
@@ -243,6 +253,11 @@ main {
   display: block;
   width: 100%;
   aspect-ratio: 4 / 3;
+}
+
+.color-item:hover {
+    transform: translateY(-0.25rem);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15)
 }
 
 .codigo-hex {

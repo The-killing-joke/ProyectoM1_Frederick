@@ -171,6 +171,7 @@ function muestraPaleta(coloresAMostrar) {
 }
 
 function renderizarPaleta(colores) {
+  paletaColores.dataset.cantidad = colores.length;
   paletaColores.innerHTML = "";
   muestraPaleta(colores);
 }
