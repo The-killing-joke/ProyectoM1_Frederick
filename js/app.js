@@ -17,6 +17,7 @@ const mensajeError = document.querySelector("#mensaje-error");
 const listaHistorial = document.querySelector("#lista-historial");
 const historialVacio = document.querySelector("#historial-vacio");
 const botonLimpiarHistorial = document.querySelector("#limpiar-historial");
+const estadoInicial = document.querySelector("#estado-inicial");
 
 const CLAVE_HISTORIAL = "historialPaletasColorfly";
 let coloresEnPantalla = [];
@@ -200,6 +201,7 @@ function muestraPaleta(coloresAMostrar) {
 
 function renderizarPaleta(colores) {
   paletaColores.dataset.cantidad = colores.length;
+  estadoInicial.hidden = colores.length > 0;
   paletaColores.innerHTML = "";
   muestraPaleta(colores);
 }

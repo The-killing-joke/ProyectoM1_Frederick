@@ -10,7 +10,8 @@
 </head>
 <body>
     <header>
-        <h1>Colorfly Studio</h1>
+        <img class="logo-principal" src="./img/CFS.png" alt="Logotipo de Colorfly Studio: mariposa multicolor">
+        <h1>Genera paletas que inspiran</h1>
         <p>Bienvenido al generador de paletas de colores de Colorfly Studio, un espacio creativo donde podrás encontrar inspiración y crear combinaciones únicas con paletas de 6, 8 o 9 colores.</p>
     </header>
     <main>
@@ -63,6 +64,10 @@
 
             <div id="resultado-paletas" class="resultado-paletas" aria-live="polite">
                 <h3 id="nombre-paleta">Tu paleta</h3>
+                <p class="ayuda-bloqueo"> Haz clic en un color para bloquearlo antes de generar una nueva paleta.</p>
+                <p id="estado-inicial" class="estado-inicial">
+                    Elige la cantidad de colores y genera una paleta para comenzar.
+                </p>
                 <p id="mensaje-error" class="mensaje-error" role="alert"></p>
                 <p id="descripcion-paleta"></p>
                 <p id="usos-paleta"></p>
@@ -93,7 +98,15 @@
     
     </main>
     <footer>
-        <p>Proyecto M1: Colorfly Studio - Frederick Bermúdez</p> 
+        <div class="contenido-footer">
+            <p>Proyecto M1: Colorfly Studio - Frederick Bermúdez</p>
+
+            <nav class="enlaces-footer" aria-label="Enlaces de contacto">
+                <a href="https://github.com/The-killing-joke/ProyectoM1_Frederick" target="_blank" rel="noopener noreferrer">Ver repositorio en GitHub</a>
+                <a href="mailto:frederickber.20@gmail.com">Contactar por correo</a>
+            </nav>
+        </div>
+        <p class="credito-footer">Diseñado por Frederick Bermúdez</p>
     </footer>
 </body>
 </html>
