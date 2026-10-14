@@ -75,4 +75,4 @@ ProyectoM1_Frederick/
 
 Durante el desarrollo usé IA como guía de aprendizaje para comprender HTML semántico, CSS responsive, accesibilidad, manipulación del DOM, JavaScript y Git.
 
-La documentación de los prompts utilizados está disponible en [PROMPTS.pdf](./prompts/PROMPTS.pdf). Allí se registra el acompañamiento recibido y se relacionan las consultas realizadas con las decisiones técnicas descritas en este README.
+La documentación cronológica de los prompts, respuestas y evidencias visuales está disponible en [PROMPTS.md](./prompts/PROMPTS.md). También puedes consultar la versión en formato fijo: [PROMPTS.pdf](./prompts/PROMPTS.pdf).
